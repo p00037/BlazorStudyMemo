@@ -1,6 +1,6 @@
 ﻿namespace BlazorTest.Client.PageModels
 {
-    public class WeatherForecast
+    public class WeatherForecastPageEntitiy
     {
         public DateOnly Date { get; set; }
         public int TemperatureC { get; set; }
