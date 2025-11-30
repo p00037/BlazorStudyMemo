@@ -1,5 +1,8 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using System;
+using System.Collections.Generic;
 using BlazorTest.Client.PageModels;
+using BlazorTest.Data;
+using Microsoft.AspNetCore.Mvc;
 
 namespace BlazorTest.Controllers
 {
@@ -7,21 +10,24 @@ namespace BlazorTest.Controllers
     [Route("[controller]")] // ルートは /WeatherForecast になります
     public class WeatherForecastController : ControllerBase
     {
-        private static readonly string[] Summaries = new[]
+        private readonly ApplicationDbContext _db;
+
+        public WeatherForecastController(ApplicationDbContext db) 
         {
-        "Freezing", "Bracing", "Chilly", "Cool", "Mild", "Warm", "Balmy", "Hot", "Sweltering", "Scorching"
-    };
+            _db = db;
+        }
 
         [HttpGet]
-        public IEnumerable<WeatherForecast> Get()
+        public IEnumerable<WeatherForecastPageEntitiy> Get()
         {
-            return Enumerable.Range(1, 5).Select(index => new WeatherForecast
+            IEnumerable<WeatherForecastPageEntitiy> pageEntities = _db.WeatherForecasts.Select(x => new WeatherForecastPageEntitiy
             {
-                Date = DateOnly.FromDateTime(DateTime.Now.AddDays(index)),
-                TemperatureC = Random.Shared.Next(-20, 55),
-                Summary = Summaries[Random.Shared.Next(Summaries.Length)]
-            })
-            .ToArray();
+                Date = x.Date,
+                Summary = x.Summary,
+                TemperatureC = x.TemperatureC
+            }).ToArray();
+
+            return pageEntities;
         }
     }
 }
