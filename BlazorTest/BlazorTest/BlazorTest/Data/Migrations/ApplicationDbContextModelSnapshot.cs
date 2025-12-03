@@ -105,7 +105,7 @@ namespace BlazorTest.Migrations
                     b.ToTable("Tenants", (string)null);
                 });
 
-            modelBuilder.Entity("BlazorTest.Domain.WeatherForecast.WeatherForecastEntity", b =>
+            modelBuilder.Entity("BlazorTest.Domain.Weather.WeatherForecastEntity", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -122,9 +122,8 @@ namespace BlazorTest.Migrations
                     b.Property<int>("TemperatureC")
                         .HasColumnType("int");
 
-                    b.Property<string>("TenantId")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                    b.Property<int>("TenantId")
+                        .HasColumnType("int");
 
                     b.HasKey("Id");
 

@@ -27,6 +27,13 @@ builder.Services.AddAuthorization();
 builder.Services.AddHttpContextAccessor();
 builder.Services.AddScoped<IUserService, CurrentUserService>();
 
+builder.Services.AddScoped(sp =>
+{
+    // 既定値: 開発用のローカルホストを設定しています。必要に応じて appsettings.json で "BaseAddress" を設定してください。
+    var baseAddress = builder.Configuration["BaseAddress"] ?? "https://localhost:5001/";
+    return new HttpClient { BaseAddress = new Uri(baseAddress) };
+});
+
 var connectionString = builder.Configuration.GetConnectionString("DefaultConnection") ?? throw new InvalidOperationException("Connection string 'DefaultConnection' not found.");
 builder.Services.AddDbContext<ApplicationDbContext>(options =>
     options.UseSqlServer(connectionString));
