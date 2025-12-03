@@ -1,5 +1,5 @@
 using BlazorTest.Domain.Tenant;
-using BlazorTest.Domain.WeatherForecast;
+using BlazorTest.Domain.Weather;
 using BlazorTest.Services;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
@@ -24,8 +24,12 @@ namespace BlazorTest.Data
         {
             base.OnModelCreating(modelBuilder);
 
-            modelBuilder.Entity<WeatherForecastEntity>().ToTable("WeatherForecasts").Property(c => c.Id).IsRequired();
+            
             modelBuilder.Entity<TenantEntity>().ToTable("Tenants").Property(c => c.Id).IsRequired();
+            modelBuilder.Entity<WeatherForecastEntity>().ToTable("WeatherForecasts").Property(c => c.Id).IsRequired();
+
+            // グローバルクエリフィルタ：TenantId が現在のテナントに一致するもののみ
+            modelBuilder.Entity<WeatherForecastEntity>().HasQueryFilter(c => c.TenantId == int.Parse(_userService.GetTenantId()));
         }
     }
 }

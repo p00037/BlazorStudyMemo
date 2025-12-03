@@ -12,7 +12,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace BlazorTest.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20251130124059_Ver1")]
+    [Migration("20251203132505_Ver1")]
     partial class Ver1
     {
         /// <inheritdoc />
@@ -91,7 +91,24 @@ namespace BlazorTest.Migrations
                     b.ToTable("AspNetUsers", (string)null);
                 });
 
-            modelBuilder.Entity("BlazorTest.Domain.WeatherForecast.WeatherForecastEntity", b =>
+            modelBuilder.Entity("BlazorTest.Domain.Tenant.TenantEntity", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("UserId")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Tenants", (string)null);
+                });
+
+            modelBuilder.Entity("BlazorTest.Domain.Weather.WeatherForecastEntity", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -108,9 +125,8 @@ namespace BlazorTest.Migrations
                     b.Property<int>("TemperatureC")
                         .HasColumnType("int");
 
-                    b.Property<string>("TenantId")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                    b.Property<int>("TenantId")
+                        .HasColumnType("int");
 
                     b.HasKey("Id");
 
